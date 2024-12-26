@@ -27,3 +27,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+filtered_songs.csv
+src/universal_top_spotify_songs.csv

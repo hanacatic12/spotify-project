@@ -3,12 +3,10 @@ public class Song {
     private String songName;
     private String artist;
     private Integer dailyRank;
-
-    private Integer maxDailyRank;
-    private Integer minDailyRank;
     private Double avgDailyRank;
 
     private String country;
+    private final String snapshotDate;
     private Integer popularity;
 
     private Double avgPopularity;
@@ -28,12 +26,13 @@ public class Song {
     private Integer numOfDaysOnList;
 
 
-    public Song(String songId, String songName, String artist, Integer dailyRank, String country, Integer popularity, Boolean isExplicit, Integer duration, String albumReleaseDate, Double danceability, Integer key, Double loudness, Integer mode, Double acousticness, Double valence, Double tempo, Integer timeSignature) {
+    public Song(String songId, String songName, String artist, Integer dailyRank, String country, String snapshotDate, Integer popularity, Boolean isExplicit, Integer duration, String albumReleaseDate, Double danceability, Integer key, Double loudness, Integer mode, Double acousticness, Double valence, Double tempo, Integer timeSignature) {
         this.songId = songId;
         this.songName = songName;
         this.artist = artist;
         this.dailyRank = dailyRank;
         this.country = country;
+        this.snapshotDate = snapshotDate;
         this.popularity = popularity;
         this.isExplicit = isExplicit;
         this.duration = duration;
@@ -50,8 +49,6 @@ public class Song {
         numOfDaysOnList = 0;
         avgPopularity = 0.;
         avgDailyRank = 0.;
-        minDailyRank = Integer.MAX_VALUE;
-        maxDailyRank = 0;
     }
 
     public String getSongId() {
@@ -182,22 +179,6 @@ public class Song {
         this.avgPopularity = avgPopularity;
     }
 
-    public Integer getMaxDailyRank() {
-        return maxDailyRank;
-    }
-
-    public void setMaxDailyRank(Integer maxDailyRank) {
-        this.maxDailyRank = maxDailyRank;
-    }
-
-    public Integer getMinDailyRank() {
-        return minDailyRank;
-    }
-
-    public void setMinDailyRank(Integer minDailyRank) {
-        this.minDailyRank = minDailyRank;
-    }
-
     public Double getAvgDailyRank() {
         return avgDailyRank;
     }
@@ -228,5 +209,9 @@ public class Song {
 
     public void setPopularity(Integer popularity) {
         this.popularity = popularity;
+    }
+
+    public String getSnapshotDate() {
+        return snapshotDate;
     }
 }
