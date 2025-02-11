@@ -10,20 +10,8 @@ def load_data(file_path):
         print(f"Error: File '{file_path}' not found.")
         exit()
 
-def categorize_artists(artists, artist_counts):
-    artist_list = artists.split(',')
-    count = sum(artist_counts.get(artist.strip(), 0) for artist in artist_list)
-    if count > 50:
-        return 'Very Popular'
-    elif count > 20:
-        return 'Moderately Popular'
-    else:
-        return 'Less Popular'
 
 def preprocess_data(data):
-    artist_counts = data['Artist'].str.split(',').explode().value_counts()
-    data['Artist_Category'] = data['Artist'].apply(lambda x: categorize_artists(x, artist_counts))
-    data = pd.get_dummies(data, columns=['Artist_Category'])
     data = data.loc[:, ~data.columns.str.contains('Song ID|Song Name')]
     data['Popularity_Category'] = data['Popularity'].apply(lambda x: 'Not Popular' if x < 50 else 'Popular')
     X = pd.get_dummies(data.drop(columns=['Popularity', 'Popularity_Category']))
@@ -54,7 +42,7 @@ def train_and_evaluate_model(X_train, X_val, y_train, y_val, X_test, y_test):
     print(classification_report(y_test, y_test_pred))
 
 if __name__ == "__main__":
-    data = load_data('filtered_songs_num.csv')
+    data = load_data('filtered_songs.csv')
     X, y = preprocess_data(data)
     X_train, X_val, X_test, y_train, y_val, y_test = split_data(X, y)
     train_and_evaluate_model(X_train, X_val, y_train, y_val, X_test, y_test)

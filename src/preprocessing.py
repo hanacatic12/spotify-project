@@ -1,5 +1,6 @@
 import re
 import sys
+from collections import Counter
 
 
 def main():
@@ -88,13 +89,28 @@ def main():
     except Exception as e:
         print(e)
 
-    writeDistinctSongs(list(distinctSongsMap.values()), "filtered_songs.csv")
+    artist_counts = count_artist_appearances(allSongs)
+    writeDistinctSongs(list(distinctSongsMap.values()), "filtered_songs.csv", artist_counts)
 
     distinctCount = len(distinctSongsMap)
     print("Number of distinct songs: " + str(distinctCount))
 
+def count_artist_appearances(allSongs):
+    artists = [artist.strip() for song in allSongs for artist in song.getArtist().split(",")]
+    return Counter(artists)
+    
 
-def writeDistinctSongs(songs, file):
+def categorize_artist(artist_counts, artist):
+    count = artist_counts.get(artist.strip(), 0)
+    if count > 50:
+        return "Very Popular"
+    elif count > 20:
+        return "Moderately Popular"
+    else:
+        return "Less Popular"    
+
+
+def writeDistinctSongs(songs, file, artist_counts):
     try:
         fw = open(file, "w", encoding="utf-8")
         count = 0
@@ -104,9 +120,10 @@ def writeDistinctSongs(songs, file):
         )
         for song in songs:
             if isValidSong(song):
+                artist_category = categorize_artist(artist_counts, song.getArtist())
                 fw.write(
                     "{},{},{:.6f},{},{},{},{},{},{},{},{},{}\n".format(
-                        song.getArtist(),
+                        artist_category,
                         getNClass(song.getNumOfDaysOnList()),
                         song.getAvgPopularity(),
                         song.getExplicit(),
